@@ -49,7 +49,7 @@ Anadir_Grupo (){
     clear -x
     echo "Lista de grupos existentes:"
     cat /etc/group | cut -d: -f1,3 | nl
-    cho "Ingrese nombre o id del grupo"
+    echo "Ingrese nombre o id del grupo"
     read group
     echo "Ingrese el usuario a agregar en este grupo"
     read user
