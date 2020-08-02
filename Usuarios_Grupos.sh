@@ -129,7 +129,7 @@ caso1 (){
     read respuesta
     if [[ $respuesta = Y || $respuesta = y ]]; then
         echo "Creando usuario"
-        useradd -m -d $home -s $shell -c "$comentario" -u $UID -g $GID $nameuser
+        useradd -m -d $home -s $shell -c "$comentario" -u $uID -g $GID $nameuser
         elif [[ $respuesta = n || $respuesta = N ]]; then
         echo -e "Usuario no creado"
     fi
