@@ -1,13 +1,6 @@
 #!/bin/bash
 clear -x
 
-echo -e "Sistema de administracion de usuarios y grupos \n¿Qué desea hacer?"
-
-#MENU IMPRIMIR
-datos (){
-    echo -e "1) Crear_Grupo\n2) Crear_Usuario\n3) Salir"
-}
-
 #CREAR GRUPO PREDETERMINADO
 Crear_Grupo1 (){
     echo "Digite el nombre del grupo a crear"
@@ -81,35 +74,72 @@ Crear_Usuario1 (){
         Opcion_Usuario
     else
         adduser $nameuser
-        echo "Usuario $nameuser creado\nVolviendo al menu anterior"
+        echo -e "Usuario $nameuser creado\nVolviendo al menu anterior"
         Opcion_Usuario
     fi
 }
-#CREAR GRUPO PERSONALIZADO
-Crear_Usuario2 (){
-    echo "Digite el nombre del grupo a crear"
-    read namegroup
-    echo "Digite el ID del grupo"
-    read ID
-    if grep -q $namegroup /etc/group
-    then
-        echo -e "El grupo $namegroup ya existe \nVolviendo al menu anterior"
-        Opcion_Grupo
-    else
-        echo "Desea introducir una contrasena y/n?"
-        read respuesta
-        if [[ $respuesta = Y || $respuesta = y ]]; then
-            echo "Contrasena:"
-            read pass
-            groupadd -g $ID -p "$pass" $namegroup
-            echo -e "Se ha creado un grupo con el nombre de $namegroup con el ID $ID y contrasena $pass\nVolviendo al menu anterior"
-            Opcion_Grupo
-            elif [[ $respuesta = n || $respuesta = N ]]; then
-            groupadd -g $ID $namegroup
-            echo -e "Se ha creado un grupo con el nombre de $namegroup e ID $ID\nVolviendo al menu anterior"
-            Opcion_Grupo
-        fi
+Usuario (){
+    while [ "$opcion" != 0 ]
+    do
         
+        echo  "MENU"
+        echo "----------"
+        echo "1) Crear un usuario con Directorio Home, Shell, Comentario, UID y GUI"
+        echo "2) Crear un usuario sin Directorio Home, sin Shell, sin Grupo y un Comentario"
+        echo "0) Salir"
+        echo "----------"
+        
+        read opcion
+        
+        case $opcion in
+            1)
+                echo "Crear un usuario con Directorio Home, Shell, Comentario, UID y GUI"
+                echo "El usuario actual es $nameuser"
+                echo "insertar el Directorio Home:"
+                read home
+                echo "insertar el shell:"
+                read shell
+                echo "insertar comentario: "
+                read comentario
+                echo "insertar el user ID: "
+                read UID
+                echo "insertar el group ID: "
+                read GID
+                echo "El usuario a crear quedaria de la siguiente manera:"
+                echo "$nameuser:x:$UID:$GID:$comentario:$home:$shell:"
+                echo "Desea continuar Y/n?"
+                read respuesta
+                if [[ $respuesta = Y || $respuesta = y ]]; then
+                    echo "Creando usuario"
+                    useradd -m -d $home -s $shell -c "$comentario" -u $UID -g $GID $nameuser
+                    elif [[ $respuesta = n || $respuesta = N ]]; then
+                    echo -e "Usuario no creado"
+                fi
+                
+            ;;
+            
+            2)
+                echo "Crear un usuario sin Directorio Home, sin Shell, sin Grupo y un Comentario"
+                echo "insertar el usuario actual es $nameuser "
+                echo "insertar comentario: "
+                read comentario
+                useradd -M -N -r -s /bin/false -c "$comentario" $nameuser
+            ;;
+        esac
+    done
+}
+
+#CREAR USUARIO PERSONALIZADO
+Crear_Usuario2 (){
+    echo "Digite el nombre del usuario a crear"
+    read nameuser
+    if grep -q $nameuser /etc/passwd
+    then
+        echo -e "El usuario $nameuser ya existe\nVolviendo al menu anterior"
+        Opcion_Usuario
+    else
+        Usuario
+        Opcion_Usuario
     fi
 }
 #OPCION USUARIO
@@ -136,6 +166,7 @@ Opcion_Usuario (){
 
 #MENU PRINCIPAL
 menu (){
+    echo -e "Sistema de administracion de usuarios y grupos \n¿Qué desea hacer?"
     menu="Crear_Grupo Crear_Usuario Salir"
     select menu in $menu
     do
