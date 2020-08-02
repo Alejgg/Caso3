@@ -114,14 +114,14 @@ Crear_Usuario2 (){
 }
 #OPCION USUARIO
 Opcion_Usuario (){
-    echo -e "Ha seleccionado el añadir un nuevo USUARIO"
+    echo -e "Ha seleccionado el añadir un nuevo usuario"
     menu="Usuario_Predeterminado Usuario_Personalizado Atras"
     select menu in $menu
     do
-        if [ $menu = "Grupo_Predeterminado" ]; then
+        if [ $menu = "Usuario_Predeterminado" ]; then
             echo "Creando usuario predeterminado"
             Crear_Usuario1
-            elif [ $menu = "Grupo_Personalizado" ]; then
+            elif [ $menu = "Usuario_Personalizado" ]; then
             echo "Creando usuario con personalizado"
             Crear_Usuario2
             elif [ $menu = "Atras" ]; then
