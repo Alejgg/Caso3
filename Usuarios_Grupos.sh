@@ -114,12 +114,11 @@ caso1 (){
     echo "Desea crear un grupo con el mismo nombre del usuario $username Y/n?"
     read respuesta
     if [[ $respuesta = Y || $respuesta = y ]]; then
-        echo "Creando grupo $nameuser con ID $uID"
-        groupadd -g $uID $nameuser
+        echo "Creando grupo $nameuser"
+        groupadd $nameuser
         elif [[ $respuesta = n || $respuesta = N ]]; then
         echo -e "Grupo no creado"
     fi
-    clear -x
     echo "Lista ultimos 10 grupos existentes"
     tail /etc/group | cut -d: -f1,3
     echo "Insertar el group ID: "
