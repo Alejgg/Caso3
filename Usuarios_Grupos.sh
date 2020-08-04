@@ -1,7 +1,7 @@
 #!/bin/bash
 datos (){
-        echo -e "1) Crear_Grupo\n2) Crear_Usuario\n3) Listar_Usuarios\n4) Listar_Grupos\n5) Salir"
-
+    echo -e "1) Crear_Grupo\n2) Crear_Usuario\n3) Listar_Usuarios\n4) Listar_Grupos\n5) Salir"
+    
 }
 #CREAR GRUPO PREDETERMINADO
 Crear_Grupo1 (){
@@ -55,7 +55,7 @@ Anadir_Grupo (){
     read user
     usermod -a -G $group $user
     echo "Usuario $user agregado al grupo $group"
-
+    
 }
 #OPCION GRUPO
 Opcion_Grupo (){
@@ -111,11 +111,17 @@ caso1 (){
         echo "ID de usuario repetido!! prueba con otro: "
         read uID
     done
-    echo "Desea crear un grupo con el mismo nombre del usuario $username Y/n?"
+    echo "Desea crear un grupo con el mismo nombre del usuario $nameuser Y/n?"
     read respuesta
     if [[ $respuesta = Y || $respuesta = y ]]; then
-        echo "Creando grupo $nameuser"
-        groupadd $nameuser
+        grupo2=$nameuser
+        while grep -q $grupo2 /etc/group
+        do
+            echo "Un grupo con el nombre $nameuser ya existe!! prueba con otro: "
+            read grupo2
+        done
+        echo "Creando grupo $grupo2"
+        groupadd $grupo2
         elif [[ $respuesta = n || $respuesta = N ]]; then
         echo -e "Grupo no creado"
     fi
@@ -132,13 +138,14 @@ caso1 (){
         useradd -m -d $home -s $shell -c "$comentario" -u $uID -g $GID $nameuser
         elif [[ $respuesta = n || $respuesta = N ]]; then
         echo -e "Usuario no creado"
+        Usuario
     fi
     echo "Desea poner una contrasena al usuario $nameuser creado Y/n?"
     read respuesta
     if [[ $respuesta = Y || $respuesta = y ]]; then
         passwd $nameuser
         elif [[ $respuesta = n || $respuesta = N ]]; then
-        echo -e "Usuario $username sin contrasena"
+        echo -e "Usuario $nameuser sin contrasena"
     fi
 }
 Usuario (){
