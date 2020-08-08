@@ -20,9 +20,8 @@ mkdir -p /home/$usr/backup
 echo "COPIA DE SEGURIDAD CREADA EN /home/$usr/backup"
 cp /home/$usr/log.tar /home/$usr/backup
 echo "LOS ARCHIVOS GUARDADOS SON: "
-tar="tar -tf /home/$usr/log.tar | grep -o [^/]*$"
-    echo -e "Los archivos dentro de \e[1;31m/home/$usr/log.tar\e[0m son: \n "
-    echo -e "\e[0;32m`$tar`\e[0m" | nl
+echo -e "Los archivos dentro de \e[1;31m/home/$usr/log.tar\e[0m son: \n "
+tar -tf /home/$usr/log.tar | grep -o [^/]*$
 rm texto.txt
 
 exit 0
